@@ -927,6 +927,13 @@
           <span class="nav-icon">&#128100;</span>
           Profile Photo
         </div>
+
+        <div class="nav-group-label">Publish</div>
+
+        <div class="nav-item" data-section="publish" onclick="switchSection('publish')">
+          <span class="nav-icon">&#128640;</span>
+          Publish to Web
+        </div>
       </nav>
 
       <div class="sidebar-footer">
@@ -1107,6 +1114,42 @@
 
         <div id="profile-cards"></div>
         <div class="form-hint" style="margin-top:0.4rem;">Reload the portfolio site after saving to see changes.</div>
+      </div>
+
+      <!-- PUBLISH -->
+      <div class="section-panel" id="panel-publish">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Publish to Web</div>
+            <div class="panel-desc">Your edits are saved only in this browser. To make them appear on the public website (and for other people), publish them into a <code>content.json</code> file.</div>
+          </div>
+        </div>
+
+        <div style="max-width:640px;">
+          <div style="border:1px solid var(--border);border-radius:11px;padding:1.3rem;margin-bottom:1rem;background:var(--card);">
+            <div style="font-weight:600;margin-bottom:0.3rem;">Step 1 &mdash; Download your content</div>
+            <div class="form-hint" style="margin:0 0 0.9rem;">Bundles everything you edited (experience, skills, photos, logos, theme, backgrounds) into one <code>content.json</code> file.</div>
+            <button class="btn btn-primary" onclick="exportContent()">&#11015; Download content.json</button>
+            <div id="publish-stats" class="form-hint" style="margin-top:0.7rem;"></div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:11px;padding:1.3rem;margin-bottom:1rem;background:var(--card);">
+            <div style="font-weight:600;margin-bottom:0.3rem;">Step 2 &mdash; Put it in your project &amp; push</div>
+            <div class="form-hint" style="margin:0;">
+              Move the downloaded <code>content.json</code> into your project folder (next to <code>index.html</code>), then run:
+              <pre style="background:var(--surface);border:1px solid var(--border2);border-radius:7px;padding:0.7rem 0.9rem;margin-top:0.6rem;overflow:auto;font-size:0.82rem;line-height:1.6;">git add content.json
+git commit -m "Update content"
+git push</pre>
+              The website reads <code>content.json</code> on load, so visitors will see your real content.
+            </div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:11px;padding:1.3rem;background:var(--card);">
+            <div style="font-weight:600;margin-bottom:0.3rem;">Restore from a file (optional)</div>
+            <div class="form-hint" style="margin:0 0 0.7rem;">Load a <code>content.json</code> back into this browser &mdash; useful on a new computer or to recover your data.</div>
+            <input type="file" accept="application/json,.json" id="import-file" class="form-input" onchange="importContent(this)">
+          </div>
+        </div>
       </div>
 
     </main>
@@ -1342,6 +1385,78 @@
       if (sec === 'theme')      renderThemePanel();
       if (sec === 'profile')    renderProfilePanel();
       if (sec === 'skills')     renderSection('skills');
+      if (sec === 'publish')    renderPublishStats();
+    }
+
+    /* ═══════════════════════════════════════════════════
+       PUBLISH — export/import all cms_* data to content.json
+    ═══════════════════════════════════════════════════ */
+    function collectCmsData() {
+      const data = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.indexOf('cms_') === 0 && k !== 'cms_published_v') {
+          data[k] = localStorage.getItem(k);
+        }
+      }
+      return data;
+    }
+
+    function renderPublishStats() {
+      const el = document.getElementById('publish-stats');
+      if (!el) return;
+      const cnt = sec => { try { return (JSON.parse(localStorage.getItem(sec) || '[]') || []).length; } catch (e) { return 0; } };
+      const has = k => !!localStorage.getItem(k);
+      const parts = [];
+      parts.push(cnt('cms_experience')   + ' experience');
+      parts.push(cnt('cms_competitions') + ' competitions');
+      parts.push(cnt('cms_certificates') + ' certificates');
+      parts.push(cnt('cms_skills')       + ' skills');
+      parts.push(cnt('cms_portfolio')    + ' portfolio');
+      const extras = [];
+      if (has('cms_profile_photo')) extras.push('hero photo');
+      if (has('cms_about_photo'))   extras.push('about photo');
+      if (has('cms_theme'))         extras.push('theme');
+      let bgN = 0;
+      for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && /^cms_bg_/.test(k) && !/_op$/.test(k)) bgN++; }
+      if (bgN) extras.push(bgN + ' background' + (bgN > 1 ? 's' : ''));
+      el.innerHTML = 'Will include: ' + parts.join(' · ') + (extras.length ? '<br>Plus: ' + extras.join(' · ') : '');
+    }
+
+    function exportContent() {
+      const payload = { _published: Date.now(), data: collectCmsData() };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url;
+      a.download = 'content.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('content.json downloaded — now commit & push it.', 'success');
+    }
+
+    function importContent(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        let payload;
+        try { payload = JSON.parse(e.target.result); } catch (err) {
+          showToast('That file is not valid JSON', 'error'); input.value = ''; return;
+        }
+        const data = (payload && payload.data) ? payload.data : payload;
+        if (!data || typeof data !== 'object') { showToast('Unrecognized content file', 'error'); input.value = ''; return; }
+        let n = 0;
+        Object.keys(data).forEach(function (k) {
+          if (k.indexOf('cms_') === 0) { try { localStorage.setItem(k, data[k]); n++; } catch (err) {} }
+        });
+        input.value = '';
+        showToast('Imported ' + n + ' items. Reloading…', 'success');
+        setTimeout(function () { location.reload(); }, 900);
+      };
+      reader.readAsText(file);
     }
 
     /* ═══════════════════════════════════════════════════
