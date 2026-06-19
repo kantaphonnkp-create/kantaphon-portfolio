@@ -1,0 +1,11 @@
+# Unused large media
+Background Video.mp4
+
+# Local tooling / machine-specific settings
+.claude/settings.local.json
+.claude/skills/
+.impeccable/hook.cache.json
+
+# OS junk
+.DS_Store
+Thumbs.db

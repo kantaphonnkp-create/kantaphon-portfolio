@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-18T00:00:00Z",
+  "title": "Design System: Kantaphon Aochampa — Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "bowtie-red": {
+        "role": "primary",
+        "displayName": "Bowtie Red",
+        "canonical": "#e11d2e",
+        "tonalRamp": ["#2a0508", "#4d070e", "#7a0c18", "#a81322", "#cc1828", "#e11d2e", "#ee5d68", "#f7a8ae"]
+      },
+      "detective-blue": {
+        "role": "secondary",
+        "displayName": "Detective Blue",
+        "canonical": "#3b82f6",
+        "tonalRamp": ["#0b1733", "#122a5e", "#1d3f8c", "#2a59c2", "#3b82f6", "#669bf8", "#93bafb", "#c2d8fd"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink Black",
+        "canonical": "#000000",
+        "tonalRamp": ["#000000", "#0a0a0a", "#111111", "#1f1f1f", "#2a2a2a", "#555555", "#a1a1aa", "#ffffff"]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Zinc",
+        "canonical": "#a1a1aa",
+        "tonalRamp": ["#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#a1a1aa", "#d4d4d8", "#f4f4f5"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline; the name carries the signature gradient." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles, solid white." },
+      "title": { "displayName": "Title", "purpose": "Role subtitles and card headings." },
+      "body": { "displayName": "Body", "purpose": "Paragraphs; 65–75ch measure." },
+      "label": { "displayName": "Label", "purpose": "Uppercase Detective-Blue section eyebrow." }
+    },
+    "shadows": [
+      { "name": "red-glow-rest", "value": "0 4px 24px rgba(225,29,46,0.35)", "purpose": "Ambient lift under the primary button so the decisive control reads as live." },
+      { "name": "red-glow-hover", "value": "0 8px 32px rgba(225,29,46,0.5)", "purpose": "Hover feedback on the primary button." },
+      { "name": "red-glow-card", "value": "0 16px 48px rgba(225,29,46,0.15)", "purpose": "Soft glow when a card leans toward the light on hover." },
+      { "name": "structural-lift", "value": "0 12px 32px rgba(0,0,0,0.25)", "purpose": "Neutral depth for raised timeline cards." }
+    ],
+    "motion": [
+      { "name": "state-fast", "value": "0.2s", "purpose": "Button hover/lift and color shifts." },
+      { "name": "state-card", "value": "0.3s", "purpose": "Card transform and glow transitions." },
+      { "name": "pulse-dot", "value": "1.8s ease-in-out infinite", "purpose": "The pulsing red 'current role' dot on the timeline." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "680px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single most important action in a view; carries the red→blue signature gradient and a resting red glow.",
+      "html": "<button class=\"ds-btn-primary\">View My Work</button>",
+      "css": ".ds-btn-primary { font-family: Poppins, sans-serif; font-weight: 600; font-size: 0.95rem; color: #fff; background: linear-gradient(135deg, #e11d2e, #3b82f6); border: none; border-radius: 8px; padding: 0.85rem 2rem; box-shadow: 0 4px 24px rgba(225,29,46,0.35); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; } .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(225,29,46,0.5); } .ds-btn-primary:focus-visible { outline: 2px solid #e11d2e; outline-offset: 3px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary / everyday action; transparent until hover shifts border and text to Bowtie Red.",
+      "html": "<button class=\"ds-btn-outline\">Get In Touch</button>",
+      "css": ".ds-btn-outline { font-family: Poppins, sans-serif; font-weight: 600; font-size: 0.95rem; color: #fff; background: transparent; border: 1px solid #1f1f1f; border-radius: 8px; padding: 0.85rem 2rem; cursor: pointer; transition: color 0.2s, border-color 0.2s, transform 0.2s; } .ds-btn-outline:hover { color: #e11d2e; border-color: #e11d2e; transform: translateY(-2px); } .ds-btn-outline:focus-visible { outline: 2px solid #e11d2e; outline-offset: 3px; }"
+    },
+    {
+      "name": "Exhibit Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Project / certificate exhibit: flat on black at rest, leans toward a red glow on hover.",
+      "html": "<article class=\"ds-card\"><h4 class=\"ds-card-title\">TCG Data Research Insight</h4><p class=\"ds-card-body\">Social Listening across YouTube, TikTok and X to read the trading-card market.</p></article>",
+      "css": ".ds-card { font-family: Poppins, sans-serif; background: #111111; border: 1px solid #1f1f1f; border-radius: 16px; padding: 1.5rem; transition: transform 0.3s, box-shadow 0.3s; } .ds-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(225,29,46,0.15); } .ds-card-title { color: #fff; font-size: 1.1rem; font-weight: 600; margin: 0 0 0.5rem; } .ds-card-body { color: #a1a1aa; font-size: 0.95rem; line-height: 1.6; margin: 0; }"
+    },
+    {
+      "name": "Tag Pill",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Competition skill tag; pill with Detective-Blue text on black.",
+      "html": "<span class=\"ds-tag\">Social Listening</span>",
+      "css": ".ds-tag { font-family: Poppins, sans-serif; display: inline-block; font-size: 0.78rem; font-weight: 500; color: #3b82f6; background: #111111; border: 1px solid #1f1f1f; border-radius: 999px; padding: 0.25rem 0.75rem; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Text field; surface fill, hairline border, Bowtie-Red focus ring.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Your name\" />",
+      "css": ".ds-input { font-family: Poppins, sans-serif; font-size: 0.95rem; color: #fff; background: #0a0a0a; border: 1px solid #1f1f1f; border-radius: 8px; padding: 0.7rem 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; } .ds-input::placeholder { color: #a1a1aa; } .ds-input:focus-visible { border-color: #e11d2e; box-shadow: 0 0 0 3px rgba(225,29,46,0.25); }"
+    },
+    {
+      "name": "Section Eyebrow",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "Uppercase Detective-Blue label above a section title. Use with restraint; vary the cadence.",
+      "html": "<p class=\"ds-eyebrow\">My Work</p>",
+      "css": ".ds-eyebrow { font-family: Poppins, sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #3b82f6; margin: 0 0 0.5rem; }"
+    },
+    {
+      "name": "Current Badge",
+      "kind": "custom",
+      "refersTo": "badge-current",
+      "description": "Quiet 'Current' marker with a pulsing Bowtie-Red dot for the active role.",
+      "html": "<span class=\"ds-badge-current\"><span class=\"ds-dot\"></span>Current</span>",
+      "css": ".ds-badge-current { font-family: Poppins, sans-serif; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 600; color: #fff; background: rgba(225,29,46,0.15); border-radius: 999px; padding: 0.2rem 0.7rem; } .ds-dot { width: 7px; height: 7px; border-radius: 50%; background: #e11d2e; box-shadow: 0 0 8px rgba(225,29,46,0.9); animation: ds-pulse 1.8s ease-in-out infinite; } @keyframes ds-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } } @media (prefers-reduced-motion: reduce) { .ds-dot { animation: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Case File",
+    "overview": "A detective's case file rendered for the web: evidence laid out on a black desk, one exhibit at a time, under a focused light. The owner is a data-driven marketer whose edge is noticing what others miss, so the interface presents findings rather than shouting features. Pure black is the desk; content arrives as discrete, well-spaced exhibits. Two signal colors cut through the dark — Bowtie Red for decisive marks, Detective Blue for clues and labels. Authority comes from restraint and craft, not decoration. The detective influence is mood, never costume.",
+    "keyCharacteristics": [
+      "True-black canvas; content as spotlit exhibits, never wall-to-wall fill",
+      "Two-signal palette — red decides, blue informs — used sparingly on black",
+      "Poppins throughout; weight and size carry hierarchy, not extra typefaces",
+      "Flat at rest; a soft red glow is the only thing that lifts on interaction",
+      "Calm, intentional motion — feedback, not choreography"
+    ],
+    "rules": [
+      { "name": "The Two-Signal Rule", "body": "Only two chromatic colors exist: Bowtie Red and Detective Blue. Red decides, blue informs. No third accent.", "section": "colors" },
+      { "name": "The Spotlight Rule", "body": "Color is a signal on black, capped at ~10% of any screen. Its rarity is the point.", "section": "colors" },
+      { "name": "The No-Gradient-Text Rule", "body": "Text is never painted with a gradient — it hurts legibility. The nav wordmark and hero name are solid Bowtie Red (#e11d2e). Gradients are for button backgrounds and the photo ring only, never letters.", "section": "typography" },
+      { "name": "The One-Family Rule", "body": "Poppins only. Reach for another weight before another typeface.", "section": "typography" },
+      { "name": "The Flat-Until-Touched Rule", "body": "Surfaces are flat at rest; shadow is earned by state (hover/focus/current). No permanent gray drop shadows.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the canvas pure black (#000000) and let content arrive as spaced exhibits with room to breathe.",
+      "Do treat Bowtie Red (#e11d2e) and Detective Blue (#3b82f6) as scarce signals — red decides, blue informs — on ≤10% of any screen.",
+      "Do build hierarchy with Poppins weight and size; reach for a heavier weight before any second typeface.",
+      "Do keep surfaces flat at rest and let the red glow be the reward for hover/focus.",
+      "Do verify body and muted text hit ≥4.5:1, especially over background images.",
+      "Do give every animation a prefers-reduced-motion fallback and every control a visible Bowtie-Red focus ring."
+    ],
+    "donts": [
+      "Don't ship the interchangeable portfolio template — hero + three identical cards + contact form.",
+      "Don't let it get cluttered or cramped; negative space is the investigator's composure.",
+      "Don't drift corporate, stiff, or formal.",
+      "Don't go childish or cartoonish: no manga halftones, kawaii faces, cartoon magnifiers, or comic props.",
+      "Don't use gradient text anywhere — it's hard to read; the wordmark and hero name are solid Bowtie Red.",
+      "Don't introduce a third accent color or a permanent gray drop shadow.",
+      "Don't let the blue eyebrow harden into scaffolding on every block, and never add numbered 01/02 section markers."
+    ]
+  }
+}
