@@ -1037,53 +1037,15 @@
             </div>
           </div>
 
-          <!-- RIGHT: live portfolio preview -->
-          <div style="flex:1 1 300px;min-width:280px;position:sticky;top:1rem;">
-            <div class="form-label" style="margin-bottom:0.5rem;">Live preview &mdash; how the site will look</div>
-            <div id="theme-preview" style="border:1px solid var(--border2);border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.4);">
-              <div id="pv-body" style="background-color:var(--pv-bg);background-size:cover;background-position:center;background-repeat:no-repeat;color:var(--pv-text);font-family:inherit;">
-                <!-- Mini nav -->
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:0.65rem 1.1rem;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);">
-                  <div style="font-weight:700;font-size:0.75rem;color:var(--pv-accent);">kantaphon will become a start-up Unicorn</div>
-                  <div style="display:flex;gap:0.5rem;font-size:0.58rem;color:var(--pv-muted);"><span>Home</span><span>About</span><span>Work</span><span>Contact</span></div>
-                </div>
-                <!-- Hero: left text + right photo (mirrors real site layout) -->
-                <div style="display:flex;align-items:center;gap:1rem;padding:1.1rem 1.1rem 1.3rem;">
-                  <!-- Left -->
-                  <div style="flex:1;min-width:0;">
-                    <div style="display:inline-flex;align-items:center;gap:0.4rem;border:1px solid var(--pv-accent);border-radius:999px;padding:0.12rem 0.55rem;font-size:0.54rem;letter-spacing:0.09em;color:var(--pv-accent);margin-bottom:0.6rem;">
-                      <span style="width:5px;height:5px;border-radius:50%;background:var(--pv-accent);display:inline-block;"></span>AVAILABLE FOR WORK
-                    </div>
-                    <div style="font-weight:700;font-size:1rem;line-height:1.15;color:var(--pv-text);">Hi, I'm</div>
-                    <div style="font-weight:700;font-size:1rem;line-height:1.15;color:var(--pv-accent2);margin-bottom:0.28rem;">Kantaphon Aochampa</div>
-                    <div style="color:var(--pv-muted);font-size:0.62rem;margin-bottom:0.7rem;">Marketing &amp; Business Development</div>
-                    <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
-                      <button style="background:linear-gradient(135deg,var(--pv-accent),var(--pv-accent2));color:var(--pv-ink);border:none;border-radius:7px;padding:0.32rem 0.8rem;font-size:0.62rem;font-weight:600;cursor:default;">View My Work</button>
-                      <button style="background:transparent;color:var(--pv-text);border:1px solid var(--pv-border);border-radius:7px;padding:0.32rem 0.8rem;font-size:0.62rem;font-weight:600;cursor:default;">Get In Touch</button>
-                    </div>
-                  </div>
-                  <!-- Right: profile photo circle -->
-                  <div style="flex-shrink:0;position:relative;width:78px;height:78px;">
-                    <div id="pv-photo-ring" style="width:78px;height:78px;border-radius:50%;padding:3px;box-sizing:border-box;background:linear-gradient(135deg,var(--pv-accent),var(--pv-accent2));">
-                      <img src="About%20me%20profile.jpg" alt="Profile"
-                        style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;"
-                        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                      <div style="display:none;width:100%;height:100%;border-radius:50%;background:var(--pv-surface);align-items:center;justify-content:center;font-size:1.8rem;">&#128100;</div>
-                    </div>
-                    <div style="position:absolute;inset:-5px;border-radius:50%;border:1.5px dashed rgba(255,255,255,0.2);pointer-events:none;"></div>
-                  </div>
-                </div>
-                <!-- Sample portfolio card -->
-                <div style="padding:0 1.1rem 1.1rem;">
-                  <div style="background:var(--pv-card);border:1px solid var(--pv-border);border-radius:10px;padding:0.7rem;">
-                    <div style="height:40px;border-radius:6px;background:var(--pv-surface);margin-bottom:0.5rem;display:flex;align-items:center;justify-content:center;color:var(--pv-muted);font-size:1.1rem;">&#128247;</div>
-                    <div style="font-weight:600;font-size:0.74rem;color:var(--pv-text);">Portfolio Project</div>
-                    <div style="color:var(--pv-muted);font-size:0.62rem;margin:0.15rem 0 0.42rem;">A sample work item to preview colors.</div>
-                    <span style="display:inline-block;font-size:0.56rem;color:var(--pv-accent2);border:1px solid var(--pv-border);border-radius:999px;padding:0.07rem 0.5rem;">Insight</span>
-                  </div>
-                </div>
-              </div>
+          <!-- RIGHT: live full-site preview (the real index.html, scrollable) -->
+          <div style="flex:1 1 420px;min-width:320px;position:sticky;top:1rem;">
+            <div class="form-label" style="margin-bottom:0.5rem;">Live preview &mdash; the real site</div>
+            <div style="border:1px solid var(--border2);border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.4);height:78vh;background:#000;">
+              <iframe id="theme-preview-frame" src="index.html" title="Live site preview"
+                      onload="updateThemePreview()"
+                      style="width:100%;height:100%;border:none;display:block;"></iframe>
             </div>
+            <div class="form-hint" style="margin-top:0.5rem;">Scroll inside the preview to see other sections. Colors update live as you pick &mdash; nothing is saved until you click Save Colors.</div>
           </div>
         </div>
       </div>
@@ -2259,40 +2221,36 @@ git push</pre>
       return 0.2126*a[0] + 0.7152*a[1] + 0.0722*a[2];
     }
 
+    /* Live preview = the real index.html in an iframe. We inject the
+       in-progress (unsaved) picker colors straight onto its <html> style,
+       mirroring applyTheme() exactly — so it shows what Save would produce,
+       without writing to localStorage until the user actually saves. The
+       real page's own boot()/applyBackground()/applyProfilePhoto() already
+       render its background, photos, and content, so we only need colors. */
     function updateThemePreview() {
-      const pv = document.getElementById('theme-preview');
-      if (!pv) return;
+      const frame = document.getElementById('theme-preview-frame');
+      if (!frame) return;
+      let doc;
+      try { doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document); }
+      catch (e) { return; }
+      if (!doc || !doc.documentElement) return;
+
       const val = k => { const e = document.getElementById('th-' + k + '-color'); return e ? e.value : ''; };
+      const s = doc.documentElement.style;
+      const map = { text: '--text', muted: '--muted', bg: '--bg', surface: '--surface', card: '--card', border: '--border' };
+      Object.keys(map).forEach(k => { const v = val(k); if (v) s.setProperty(map[k], v); });
+
       const accent = val('accent');
-      pv.style.setProperty('--pv-accent',  accent);
-      pv.style.setProperty('--pv-text',    val('text'));
-      pv.style.setProperty('--pv-muted',   val('muted'));
-      pv.style.setProperty('--pv-card',    val('card'));
-      pv.style.setProperty('--pv-border',  val('border'));
-      pv.style.setProperty('--pv-bg',      val('bg'));
-      pv.style.setProperty('--pv-surface', val('surface'));
+      if (!accent) return;
+      const rgb = thHexToRgb(accent);
+      if (!rgb) return;
+      s.setProperty('--accent', accent);
+      s.setProperty('--accent-rgb', rgb.r + ' ' + rgb.g + ' ' + rgb.b);
       const a2 = thLighten(accent, 0.22);
-      pv.style.setProperty('--pv-accent2', a2);
-      pv.style.setProperty('--pv-ink', thLuminance(a2) > 0.45 ? '#1a1205' : '#ffffff');
-
-      // Apply saved body background image (same logic as index.html applyBackground)
-      const pvBody = document.getElementById('pv-body');
-      if (pvBody) {
-        const bgImg = localStorage.getItem('cms_bg_image');
-        if (bgImg) {
-          const opRaw = localStorage.getItem('cms_bg_image_op');
-          const opPct = opRaw === null ? 100 : Math.max(0, Math.min(100, parseInt(opRaw || '0', 10)));
-          const a = ((100 - opPct) / 100).toFixed(3);
-          pvBody.style.backgroundImage = 'linear-gradient(rgba(0,0,0,' + a + '),rgba(0,0,0,' + a + ')), url(\'' + bgImg + '\')';
-        } else {
-          pvBody.style.backgroundImage = '';
-        }
-      }
-
-      // Apply saved profile photo to the preview circle
-      const savedPhoto = localStorage.getItem(PROFILE_KEY);
-      const pvRingImg = document.querySelector('#pv-photo-ring img');
-      if (pvRingImg && savedPhoto) pvRingImg.src = savedPhoto;
+      const rgb2 = thHexToRgb(a2);
+      s.setProperty('--accent2', a2);
+      if (rgb2) s.setProperty('--accent2-rgb', rgb2.r + ' ' + rgb2.g + ' ' + rgb2.b);
+      s.setProperty('--accent-ink', thLuminance(a2) > 0.45 ? '#1a1205' : '#ffffff');
     }
 
     async function handleBgUpload(input, slug) {
