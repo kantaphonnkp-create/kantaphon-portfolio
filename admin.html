@@ -1041,7 +1041,7 @@
           <div style="flex:1 1 420px;min-width:320px;position:sticky;top:1rem;">
             <div class="form-label" style="margin-bottom:0.5rem;">Live preview &mdash; the real site</div>
             <div style="border:1px solid var(--border2);border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.4);height:78vh;background:#000;">
-              <iframe id="theme-preview-frame" src="index.html" title="Live site preview"
+              <iframe id="theme-preview-frame" src="index.html?preview=1" title="Live site preview"
                       onload="updateThemePreview()"
                       style="width:100%;height:100%;border:none;display:block;"></iframe>
             </div>
@@ -1348,27 +1348,6 @@ git push</pre>
       if (sec === 'profile')    renderProfilePanel();
       if (sec === 'skills')     renderSection('skills');
       if (sec === 'publish')    renderPublishStats();
-
-      // The preview iframe's own boot() fetches content.json over the network
-      // and, once that resolves, re-applies the SAVED theme — which can stomp
-      // a live (unsaved) color pick that happened during that load window.
-      // Keep re-asserting the picker's current colors for a few seconds after
-      // entering the tab so the preview can't drift back to the old colors.
-      if (sec === 'theme') startThemePreviewKeepAlive();
-      else stopThemePreviewKeepAlive();
-    }
-    let themePreviewKeepAliveId = null;
-    function stopThemePreviewKeepAlive() {
-      if (themePreviewKeepAliveId) { clearInterval(themePreviewKeepAliveId); themePreviewKeepAliveId = null; }
-    }
-    function startThemePreviewKeepAlive() {
-      stopThemePreviewKeepAlive();
-      let ticks = 0;
-      themePreviewKeepAliveId = setInterval(() => {
-        updateThemePreview();
-        ticks++;
-        if (ticks > 20) stopThemePreviewKeepAlive(); // ~5s safety window per (re)start
-      }, 250);
     }
 
     /* ═══════════════════════════════════════════════════
@@ -2202,7 +2181,6 @@ git push</pre>
         if (/^#?[0-9a-fA-F]{6}$/.test(v)) { if (v[0] !== '#') v = '#' + v; color.value = v; }
       }
       updateThemePreview();
-      startThemePreviewKeepAlive(); // extend the keep-alive window while the user is actively adjusting
     }
 
     function saveTheme() {
